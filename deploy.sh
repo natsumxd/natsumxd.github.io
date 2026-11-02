@@ -19,6 +19,32 @@ else
   AUTH=()
 fi
 
+# 推送分支。本机若有只放行 API 域名的强制代理，直连会被拒（CONNECT tunnel/502），
+# 这里自动降级为「绕过代理直连」并重试，最多 3 轮。
+push_ref() {
+  local ref="$1" attempt errfile
+  errfile=$(mktemp)
+  for attempt in 1 2 3; do
+    if git -c http.version=HTTP/1.1 push -f "$PUSH_URL" "$ref" 2>"$errfile"; then
+      rm -f "$errfile"; return 0
+    fi
+    if grep -qiE "CONNECT tunnel|Couldn't connect|Failed to connect|Empty reply|timed out" "$errfile"; then
+      echo "    网络受限，改为绕过代理直连（第 $attempt 次）…"
+      if env -u HTTP_PROXY -u HTTPS_PROXY -u http_proxy -u https_proxy -u ALL_PROXY \
+           git -c http.version=HTTP/1.1 push -f "$PUSH_URL" "$ref" 2>"$errfile"; then
+        rm -f "$errfile"; return 0
+      fi
+    else
+      cat "$errfile" >&2; rm -f "$errfile"; return 1
+    fi
+    sleep 3
+  done
+  echo "    ❌ 推送失败："
+  cat "$errfile" >&2
+  rm -f "$errfile"
+  return 1
+}
+
 echo "==> 1/6 清理临时文件"
 rm -f 5qtf8hzu _config.landscape.yml .git/HEAD.lock 2>/dev/null || true
 rm -rf .github .deploy_tmp 2>/dev/null || true
@@ -51,7 +77,7 @@ git config user.name "natsumxd"
 git config user.email "$(git config --global user.email || echo 'natsumxd@users.noreply.github.com')"
 git add -A
 git -c commit.gpgsign=false commit -q -m "source: $(date '+%Y-%m-%d %H:%M')" || echo "    （无变更）"
-git -c http.version=HTTP/1.1 push -f "$PUSH_URL" HEAD:source
+push_ref HEAD:source
 
 echo "==> 5/6 发布静态站点到 main 分支"
 rm -rf .deploy_tmp
@@ -64,7 +90,7 @@ git config user.name "natsumxd"
 git config user.email "natsumxd@users.noreply.github.com"
 git add -A
 git -c commit.gpgsign=false commit -q -m "deploy: $(date '+%Y-%m-%d %H:%M')"
-git -c http.version=HTTP/1.1 push -f "$PUSH_URL" HEAD:main
+push_ref HEAD:main
 popd >/dev/null
 rm -rf .deploy_tmp
 
