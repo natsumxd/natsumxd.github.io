@@ -61,4 +61,14 @@ English body, Markdown works as usual.
 
 仓库 `natsumxd.github.io` 的 `main` 分支根目录即线上内容；`deploy.sh` 会把 `public/` 复制到临时目录、以 `main` 分支强推上去。
 
+首次或换机部署需要一个 GitHub PAT（Personal Access Token，只需 `repo` 权限）：
+
+```bash
+GITHUB_TOKEN=ghp_xxxx ./deploy.sh
+```
+
+脚本依次完成：建仓库（若不存在）→ 源码推到 `source` 分支 → 静态站推到 `main` 分支 → 开启 Pages。日常发文章直接跑 `./deploy.sh` 即可（已在 `.git/config` 里不需要重复给 token 的话，仍建议用环境变量方式，脚本本身不保存任何凭据）。
+
+**代理注意**：若本机设置了只放行 API 域名的强制代理，`git push` 会报 `CONNECT tunnel failed, 502` 或 `Empty reply from server`。脚本已内置降级：自动改用「绕过代理直连」并重试 3 次，正常情况下无需手动干预。
+
 若之后绑定自定义域名：在 `source/` 放一个 `CNAME` 文件（内容为域名），并在 GitHub 仓库 Settings → Pages 里填写。
