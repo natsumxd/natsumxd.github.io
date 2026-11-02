@@ -50,6 +50,9 @@ rm -f 5qtf8hzu _config.landscape.yml .git/HEAD.lock 2>/dev/null || true
 rm -rf .github .deploy_tmp 2>/dev/null || true
 
 echo "==> 2/6 构建站点"
+# 先物理清掉旧产物：`hexo clean` 在本机会被 Node 安全垫片拦截且静默失败，
+# 一旦残留旧页面，会让已删除的文章继续挂在线上。
+rm -rf public db.json
 npx hexo generate
 
 if [ -n "${GITHUB_TOKEN:-}" ]; then

@@ -86,7 +86,9 @@ case "${1:-}" in
     echo "📦 已移入 ${dest}（想恢复就移回 ${POSTS}/ ）"
 
     echo "==> 重新生成站点"
-    npx hexo clean >/dev/null 2>&1 || true
+    # 注意：不要用 `hexo clean`——本机 Node 安全垫片会拦截它的递归删除且静默失败，
+    # 导致 public/ 里残留已删文章的旧页面。直接用 shell 删除更可靠。
+    rm -rf public db.json
     npx hexo generate >/dev/null
     echo "✅ 完成。发布上线请执行 ./deploy.sh"
     ;;
