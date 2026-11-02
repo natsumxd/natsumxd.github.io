@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>这个博客是怎么搭起来的</title>
+    <url>/posts/20261102-how-this-blog-was-built/</url>
+    <content><![CDATA[<div class="lang-block" data-lang="zh"><p>这篇是写给我自己看的备忘录：这套博客是怎么组起来的，以后想改哪里该去哪个文件。</p>
+<h2 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h2><table>
+<thead>
+<tr>
+<th>部分</th>
+<th>选择</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>生成器</td>
+<td>Hexo 7</td>
+<td>Node 生态，模板就是 EJS，改起来直观</td>
+</tr>
+<tr>
+<td>主题</td>
+<td>warm（自己写的）</td>
+<td>想要暖色调 + 真正的中英切换</td>
+</tr>
+<tr>
+<td>托管</td>
+<td>GitHub Pages</td>
+<td>免费、稳定、自定义域名也支持</td>
+</tr>
+<tr>
+<td>搜索</td>
+<td>hexo-generator-searchdb</td>
+<td>纯前端，不需要服务器</td>
+</tr>
+</tbody></table>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">blog/</span><br><span class="line">├── _config.yml          <span class="comment"># 站点配置：标题、作者、URL、部署</span></span><br><span class="line">├── scripts/</span><br><span class="line">│   └── tag-lang.js      <span class="comment"># 双语标签插件</span></span><br><span class="line">├── <span class="built_in">source</span>/</span><br><span class="line">│   ├── _posts/          <span class="comment"># 文章都放这里</span></span><br><span class="line">│   ├── about/           <span class="comment"># 关于页</span></span><br><span class="line">│   ├── tags/            <span class="comment"># 标签总览页</span></span><br><span class="line">│   └── search/          <span class="comment"># 搜索页</span></span><br><span class="line">└── themes/warm/</span><br><span class="line">    ├── _config.yml      <span class="comment"># 主题配置：菜单、问候语、头像</span></span><br><span class="line">    ├── layout/          <span class="comment"># EJS 模板</span></span><br><span class="line">    └── <span class="built_in">source</span>/          <span class="comment"># css / js / images</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="写一篇新文章"><a href="#写一篇新文章" class="headerlink" title="写一篇新文章"></a>写一篇新文章</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> blog</span><br><span class="line">npx hexo new post <span class="string">&quot;文章标题&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后打开 <code>source/_posts/</code> 下新生成的文件，用双语标签把内容分开写：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">&#123;% lang zh %&#125;</span><br><span class="line">这里是中文内容，可以正常用 Markdown。</span><br><span class="line">&#123;% endlang %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% lang en %&#125;</span><br><span class="line">English content here. Markdown works as usual.</span><br><span class="line">&#123;% endlang %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>页面上只会显示当前选中的那一种语言；右上角的按钮负责切换，选择会记在浏览器里。</p>
+<h2 id="本地预览"><a href="#本地预览" class="headerlink" title="本地预览"></a>本地预览</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npx hexo server</span><br></pre></td></tr></table></figure>
+
+<p>打开 <a href="http://localhost:4000/">http://localhost:4000</a> ，改完存盘刷新就行。</p>
+<h2 id="发布上线"><a href="#发布上线" class="headerlink" title="发布上线"></a>发布上线</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npx hexo clean &amp;&amp; npx hexo generate    <span class="comment"># 生成静态文件到 public/</span></span><br><span class="line">./deploy.sh                            <span class="comment"># 提交并推送到 GitHub Pages</span></span><br></pre></td></tr></table></figure>
+
+<p>推送之后等一两分钟，<code>https://natsumxd.github.io</code> 就会更新。</p>
+<h2 id="想改外观时"><a href="#想改外观时" class="headerlink" title="想改外观时"></a>想改外观时</h2><ul>
+<li>颜色、字号、间距：<code>themes/warm/source/css/style.css</code> 顶部的 <code>:root</code> 变量</li>
+<li>导航菜单、首页问候语：<code>themes/warm/_config.yml</code></li>
+<li>站点标题、作者、社交链接：<code>blog/_config.yml</code></li>
+</ul>
+</div>
+
+<div class="lang-block" data-lang="en"><p>A note to future me: how this blog is put together, and which file to open when I want to change something.</p>
+<h2 id="The-stack"><a href="#The-stack" class="headerlink" title="The stack"></a>The stack</h2><table>
+<thead>
+<tr>
+<th>Piece</th>
+<th>Choice</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Generator</td>
+<td>Hexo 7</td>
+<td>Node ecosystem, templates are plain EJS, easy to tweak</td>
+</tr>
+<tr>
+<td>Theme</td>
+<td>warm (hand-written)</td>
+<td>Warm palette plus a real bilingual switch</td>
+</tr>
+<tr>
+<td>Hosting</td>
+<td>GitHub Pages</td>
+<td>Free, stable, custom domains supported</td>
+</tr>
+<tr>
+<td>Search</td>
+<td>hexo-generator-searchdb</td>
+<td>Pure front-end, no server needed</td>
+</tr>
+</tbody></table>
+<h2 id="Directory-layout"><a href="#Directory-layout" class="headerlink" title="Directory layout"></a>Directory layout</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">blog/</span><br><span class="line">├── _config.yml          <span class="comment"># site config: title, author, URL, deploy</span></span><br><span class="line">├── scripts/</span><br><span class="line">│   └── tag-lang.js      <span class="comment"># the bilingual tag plugin</span></span><br><span class="line">├── <span class="built_in">source</span>/</span><br><span class="line">│   ├── _posts/          <span class="comment"># posts live here</span></span><br><span class="line">│   ├── about/           <span class="comment"># about page</span></span><br><span class="line">│   ├── tags/            <span class="comment"># tag overview</span></span><br><span class="line">│   └── search/          <span class="comment"># search page</span></span><br><span class="line">└── themes/warm/</span><br><span class="line">    ├── _config.yml      <span class="comment"># theme config: menu, greeting, avatar</span></span><br><span class="line">    ├── layout/          <span class="comment"># EJS templates</span></span><br><span class="line">    └── <span class="built_in">source</span>/          <span class="comment"># css / js / images</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Writing-a-new-post"><a href="#Writing-a-new-post" class="headerlink" title="Writing a new post"></a>Writing a new post</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> blog</span><br><span class="line">npx hexo new post <span class="string">&quot;Post title&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>Then open the new file in <code>source/_posts/</code> and split the content by language:</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">&#123;% lang zh %&#125;</span><br><span class="line">Chinese content here. Regular Markdown works.</span><br><span class="line">&#123;% endlang %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% lang en %&#125;</span><br><span class="line">English content here.</span><br><span class="line">&#123;% endlang %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Only the active language is displayed; the button in the header switches it and remembers the choice.</p>
+<h2 id="Preview-locally"><a href="#Preview-locally" class="headerlink" title="Preview locally"></a>Preview locally</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npx hexo server</span><br></pre></td></tr></table></figure>
+
+<p>Open <a href="http://localhost:4000/">http://localhost:4000</a> and refresh after each save.</p>
+<h2 id="Publishing"><a href="#Publishing" class="headerlink" title="Publishing"></a>Publishing</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npx hexo clean &amp;&amp; npx hexo generate    <span class="comment"># build into public/</span></span><br><span class="line">./deploy.sh                            <span class="comment"># commit and push to GitHub Pages</span></span><br></pre></td></tr></table></figure>
+
+<p>One or two minutes after the push, <code>https://natsumxd.github.io</code> updates.</p>
+<h2 id="Where-to-tweak-the-look"><a href="#Where-to-tweak-the-look" class="headerlink" title="Where to tweak the look"></a>Where to tweak the look</h2><ul>
+<li>Colors, type scale, spacing: the <code>:root</code> variables at the top of <code>themes/warm/source/css/style.css</code></li>
+<li>Menu, hero greeting: <code>themes/warm/_config.yml</code></li>
+<li>Site title, author, social links: <code>blog/_config.yml</code></li>
+</ul>
+</div>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>GitHub Pages</tag>
+        <tag>教程</tag>
+      </tags>
+  </entry>
+</search>
