@@ -28,13 +28,15 @@ npx hexo generate
 
 if [ -n "${GITHUB_TOKEN:-}" ]; then
   echo "==> 3/6 确认仓库存在"
-  code=$(curl -s -o /dev/null -w '%{http_code}' "${AUTH[@]}" "$API/repos/$OWNER/$REPO")
+  code=$(curl -sS --http1.1 -o /dev/null -w '%{http_code}' "${AUTH[@]}" "$API/repos/$OWNER/$REPO" || echo "000")
   if [ "$code" = "404" ]; then
-    curl -s -X POST "${AUTH[@]}" "$API/user/repos" \
+    curl -sS --http1.1 -X POST "${AUTH[@]}" "$API/user/repos" \
       -d "{\"name\":\"$REPO\",\"private\":false,\"description\":\"个人博客\",\"auto_init\":false}" >/dev/null
     echo "    已创建仓库 $OWNER/$REPO"
+  elif [ "$code" = "200" ]; then
+    echo "    仓库已存在"
   else
-    echo "    仓库已存在（HTTP $code）"
+    echo "    ⚠️  无法确认仓库状态（HTTP $code），继续尝试推送"
   fi
 else
   echo "==> 3/6 跳过建仓（SSH 模式，请先在网页上创建空仓库 $REPO）"
@@ -49,7 +51,7 @@ git config user.name "natsumxd"
 git config user.email "$(git config --global user.email || echo 'natsumxd@users.noreply.github.com')"
 git add -A
 git -c commit.gpgsign=false commit -q -m "source: $(date '+%Y-%m-%d %H:%M')" || echo "    （无变更）"
-git push -f "$PUSH_URL" HEAD:source
+git -c http.version=HTTP/1.1 push -f "$PUSH_URL" HEAD:source
 
 echo "==> 5/6 发布静态站点到 main 分支"
 rm -rf .deploy_tmp
@@ -62,17 +64,17 @@ git config user.name "natsumxd"
 git config user.email "natsumxd@users.noreply.github.com"
 git add -A
 git -c commit.gpgsign=false commit -q -m "deploy: $(date '+%Y-%m-%d %H:%M')"
-git push -f "$PUSH_URL" HEAD:main
+git -c http.version=HTTP/1.1 push -f "$PUSH_URL" HEAD:main
 popd >/dev/null
 rm -rf .deploy_tmp
 
 if [ -n "${GITHUB_TOKEN:-}" ]; then
   echo "==> 6/6 开启 GitHub Pages"
-  curl -s -X POST "${AUTH[@]}" "$API/repos/$OWNER/$REPO/pages" \
+  curl -sS --http1.1 -X POST "${AUTH[@]}" "$API/repos/$OWNER/$REPO/pages" \
     -d '{"source":{"branch":"main","path":"/"}}' >/dev/null 2>&1 || true
-  curl -s -X PUT "${AUTH[@]}" "$API/repos/$OWNER/$REPO/pages" \
+  curl -sS --http1.1 -X PUT "${AUTH[@]}" "$API/repos/$OWNER/$REPO/pages" \
     -d '{"source":{"branch":"main","path":"/"}}' >/dev/null 2>&1 || true
-  curl -s -X POST "${AUTH[@]}" "$API/repos/$OWNER/$REPO/pages/builds" >/dev/null 2>&1 || true
+  curl -sS --http1.1 -X POST "${AUTH[@]}" "$API/repos/$OWNER/$REPO/pages/builds" >/dev/null 2>&1 || true
   echo "    Pages 已配置为 main 分支根目录"
 else
   echo "==> 6/6 请到仓库 Settings → Pages 确认来源为 main / root"
