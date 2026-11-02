@@ -1,0 +1,20 @@
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-motto">
+      <span data-lang="zh"><%= theme.footer.motto_zh %></span>
+      <span data-lang="en"><%= theme.footer.motto_en %></span>
+    </p>
+    <p class="footer-meta">
+      <% var _y = new Date().getFullYear(); var _since = theme.footer.since; %>
+      © <%= (_since && String(_since) !== String(_y)) ? _since + '–' + _y : _y %> <%= config.author %>
+      <span class="dot">·</span>
+      <a href="<%= theme.social.github %>" target="_blank" rel="noopener">GitHub</a>
+      <span class="dot">·</span>
+      <a href="<%- url_for('/atom.xml') %>">RSS</a>
+    </p>
+    <p class="footer-powered">
+      <span data-lang="zh">由 Hexo 驱动</span>
+      <span data-lang="en">Powered by Hexo</span>
+    </p>
+  </div>
+</footer>

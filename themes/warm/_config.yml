@@ -1,0 +1,60 @@
+# 主题配置 —— 夏日手帖 (warm)
+
+# 站点标题（显示在导航栏左侧）
+logo_text_zh: 夏日手帖
+logo_text_en: Natsumxd
+
+# 导航菜单
+menu:
+  - zh: 首页
+    en: Home
+    path: /
+  - zh: 归档
+    en: Archive
+    path: /archives/
+  - zh: 分类
+    en: Categories
+    path: /categories/
+  - zh: 标签
+    en: Tags
+    path: /tags/
+  - zh: 搜索
+    en: Search
+    path: /search/
+  - zh: 关于
+    en: About
+    path: /about/
+
+# 首页头像（放在 themes/warm/source/images/avatar.svg）
+avatar: /images/avatar.svg
+
+# 首页问候语
+hero:
+  greeting_zh: 你好，我是
+  greeting_en: Hi, I'm
+  name: natsumxd
+  tagline_zh: 一个记录者。写点代码，也写点生活。
+  tagline_en: A note-taker. Writing code, and writing life.
+
+# 侧栏介绍（关于页 / 页脚）
+bio_zh: 这里是 natsumxd 的个人博客，收藏日常里值得留下的片段。
+bio_en: Personal notebook of natsumxd — a place for moments worth keeping.
+
+# 社交链接
+social:
+  github: https://github.com/natsumxd
+  rss: /atom.xml
+
+# 文章页
+post:
+  toc: true            # 显示目录
+  word_count: true     # 显示字数与阅读时长
+
+# 页脚
+footer:
+  since: 2026
+  motto_zh: 慢慢来，比较快。
+  motto_en: Slow is smooth, smooth is fast.
+
+# 默认语言：zh 或 en
+default_lang: zh

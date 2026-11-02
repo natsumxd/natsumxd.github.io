@@ -1,0 +1,34 @@
+<section class="page-head">
+  <h1 class="page-title">
+    <span data-lang="zh">标签</span>
+    <span data-lang="en">Tags</span>
+  </h1>
+  <p class="page-desc">
+    <span data-lang="zh">一共 <%= site.tags.length %> 个标签，顺着它们翻。</span>
+    <span data-lang="en"><%= site.tags.length %> tags in total. Follow them around.</span>
+  </p>
+</section>
+
+<div class="tag-cloud">
+  <% site.tags.sort('name').each(function (tag) { %>
+    <a class="chip chip-lg" href="<%- url_for(tag.path) %>">
+      #<%= tag.name %><span class="chip-count"><%= tag.length %></span>
+    </a>
+  <% }); %>
+</div>
+
+<% if (site.categories.length) { %>
+  <section class="page-head sub">
+    <h2 class="page-title sm">
+      <span data-lang="zh">分类</span>
+      <span data-lang="en">Categories</span>
+    </h2>
+  </section>
+  <div class="tag-cloud">
+    <% site.categories.sort('name').each(function (cat) { %>
+      <a class="chip chip-lg" href="<%- url_for(cat.path) %>">
+        <%= cat.name %><span class="chip-count"><%= cat.length %></span>
+      </a>
+    <% }); %>
+  </div>
+<% } %>

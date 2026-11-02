@@ -1,0 +1,53 @@
+<%
+  var pageTitle = '';
+  if (is_home()) {
+    pageTitle = config.title + ' · ' + config.subtitle;
+  } else if (is_post()) {
+    pageTitle = page.title + ' · ' + config.title;
+  } else if (is_archive()) {
+    pageTitle = '归档 · Archive · ' + config.title;
+  } else if (page.title) {
+    pageTitle = page.title + ' · ' + config.title;
+  } else {
+    pageTitle = config.title;
+  }
+  var desc = page.description || page.excerpt || config.description;
+  desc = strip_html(desc || '').replace(/\s+/g, ' ').trim().substring(0, 150);
+  var canonical = config.url + '/' + (page.path || '');
+  canonical = canonical.replace(/index\.html$/, '').replace(/([^:]\/)\/+/g, '$1');
+%>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title><%= pageTitle %></title>
+<meta name="description" content="<%= desc %>">
+<meta name="author" content="<%= config.author %>">
+<meta name="theme-color" content="#F5F8FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161C21" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="<%= canonical %>">
+<meta property="og:type" content="<%= is_post() ? 'article' : 'website' %>">
+<meta property="og:title" content="<%= pageTitle %>">
+<meta property="og:description" content="<%= desc %>">
+<meta property="og:url" content="<%= canonical %>">
+<meta property="og:site_name" content="<%= config.title %>">
+<link rel="alternate" type="application/atom+xml" title="<%= config.title %>" href="<%- url_for('/atom.xml') %>">
+<link rel="icon" href="<%- url_for('/images/favicon.svg') %>" type="image/svg+xml">
+<meta name="search-index" content="<%- url_for('/search.xml') %>">
+<link rel="stylesheet" href="<%- url_for('/css/style.css') %>">
+<script>
+  (function () {
+    var d = document.documentElement;
+    try {
+      var lang = localStorage.getItem('nb-lang');
+      if (!lang) {
+        var nav = (navigator.language || 'zh').toLowerCase();
+        lang = nav.indexOf('zh') === 0 ? 'zh' : 'en';
+      }
+      d.setAttribute('data-lang', lang);
+      d.setAttribute('lang', lang === 'zh' ? 'zh-CN' : 'en');
+      var t = localStorage.getItem('nb-theme');
+      if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      d.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<%- meta_generator() %>

@@ -1,0 +1,39 @@
+<section class="page-head">
+  <h1 class="page-title">
+    <span data-lang="zh">归档</span>
+    <span data-lang="en">Archive</span>
+  </h1>
+  <p class="page-desc">
+    <span data-lang="zh">把所有写过的日子，按年份叠起来。</span>
+    <span data-lang="en">All the days written down, stacked by year.</span>
+  </p>
+</section>
+
+<%
+  var years = {};
+  page.posts.each(function (p) {
+    var y = date(p.date, 'YYYY');
+    if (!years[y]) years[y] = [];
+    years[y].push(p);
+  });
+  var yearKeys = Object.keys(years).sort(function (a, b) { return b - a; });
+%>
+
+<div class="archive-list">
+  <% yearKeys.forEach(function (y) { %>
+    <div class="archive-year">
+      <h2 class="archive-year-label"><%= y %></h2>
+      <ul class="archive-items">
+        <% years[y].forEach(function (p) { %>
+          <li class="archive-item">
+            <time datetime="<%= date_xml(p.date) %>"><%= date(p.date, 'MM.DD') %></time>
+            <a href="<%- url_for(p.path) %>">
+              <span data-lang="zh"><%= p.title %></span>
+              <span data-lang="en"><%= p.title_en || p.title %></span>
+            </a>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+  <% }); %>
+</div>

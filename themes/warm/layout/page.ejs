@@ -1,0 +1,17 @@
+<article class="post page">
+  <% if (page.title) { %>
+  <header class="post-header">
+    <h1 class="post-title">
+      <span data-lang="zh"><%= page.title %></span>
+      <span data-lang="en"><%= page.title_en || page.title %></span>
+    </h1>
+    <% if (page.title_en) { %>
+      <p class="post-subtitle" data-lang="zh"><%= page.title_en %></p>
+      <p class="post-subtitle" data-lang="en"><%= page.title %></p>
+    <% } %>
+  </header>
+  <% } %>
+  <div class="post-body">
+    <%- page.content %>
+  </div>
+</article>

@@ -1,0 +1,63 @@
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<article class="post">
+  <header class="post-header">
+    <div class="post-eyebrow">
+      <% if (page.categories && page.categories.length) { %>
+        <a class="card-cat" href="<%- url_for(page.categories.first().path) %>"><%= page.categories.first().name %></a>
+      <% } %>
+      <time datetime="<%= date_xml(page.date) %>"><%= date(page.date, 'YYYY年M月D日') %></time>
+      <% if (theme.post.word_count) { %>
+        <%
+          var rawText = strip_html(page.content || '').replace(/\s/g, '');
+          var mins = Math.max(1, Math.round(rawText.length / 420));
+        %>
+        <span><%= rawText.length %> <span data-lang="zh">字</span><span data-lang="en">chars</span></span>
+        <span><%= mins %> <span data-lang="zh">分钟</span><span data-lang="en">min read</span></span>
+      <% } %>
+    </div>
+
+    <h1 class="post-title">
+      <span data-lang="zh"><%= page.title %></span>
+      <span data-lang="en"><%= page.title_en || page.title %></span>
+    </h1>
+
+    <% if (page.title_en) { %>
+      <p class="post-subtitle" data-lang="zh"><%= page.title_en %></p>
+      <p class="post-subtitle" data-lang="en"><%= page.title %></p>
+    <% } %>
+  </header>
+
+  <div class="post-body">
+    <%- page.content %>
+  </div>
+
+  <% if (page.tags && page.tags.length) { %>
+    <footer class="post-footer">
+      <div class="card-tags">
+        <% page.tags.each(function (tag) { %>
+          <a class="chip" href="<%- url_for(tag.path) %>">#<%= tag.name %></a>
+        <% }); %>
+      </div>
+    </footer>
+  <% } %>
+</article>
+
+<nav class="post-nav">
+  <% if (page.prev) { %>
+    <a class="post-nav-item prev" href="<%- url_for(page.prev.path) %>">
+      <span class="post-nav-label">← <span data-lang="zh">上一篇</span><span data-lang="en">Previous</span></span>
+      <span class="post-nav-title"><%= page.prev.title %></span>
+    </a>
+  <% } else { %><span></span><% } %>
+  <% if (page.next) { %>
+    <a class="post-nav-item next" href="<%- url_for(page.next.path) %>">
+      <span class="post-nav-label"><span data-lang="zh">下一篇</span><span data-lang="en">Next</span> →</span>
+      <span class="post-nav-title"><%= page.next.title %></span>
+    </a>
+  <% } %>
+</nav>
+
+<div class="back-home">
+  <a class="text-link" href="<%- url_for('/') %>"><span data-lang="zh">← 返回首页</span><span data-lang="en">← Back home</span></a>
+</div>

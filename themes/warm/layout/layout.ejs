@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="<%= theme.default_lang || 'zh' %>">
+<head>
+  <%- partial('_partial/head') %>
+</head>
+<body>
+  <div class="page-glow" aria-hidden="true"></div>
+  <%- partial('_partial/header') %>
+  <main class="site-main">
+    <%- body %>
+  </main>
+  <%- partial('_partial/footer') %>
+  <script src="<%- url_for('/js/main.js') %>" defer></script>
+</body>
+</html>

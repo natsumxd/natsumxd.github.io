@@ -1,0 +1,36 @@
+<%
+  var exZh = post.summary_zh || '';
+  if (!exZh) {
+    exZh = strip_html(post.excerpt || post.content || '').replace(/\s+/g, ' ').trim().substring(0, 110);
+  }
+  var exEn = post.summary_en || '';
+  var raw = strip_html(post.content || '');
+  var minutes = Math.max(1, Math.round(raw.replace(/\s/g, '').length / 420));
+%>
+<article class="card">
+  <div class="card-top">
+    <time class="card-date" datetime="<%= date_xml(post.date) %>"><%= date(post.date, 'YYYY.MM.DD') %></time>
+    <% if (post.categories && post.categories.length) { %>
+      <a class="card-cat" href="<%- url_for(post.categories.first().path) %>"><%= post.categories.first().name %></a>
+    <% } %>
+    <span class="card-read"><%= minutes %> <span data-lang="zh">分钟</span><span data-lang="en">min</span></span>
+  </div>
+
+  <h2 class="card-title">
+    <a href="<%- url_for(post.path) %>">
+      <span data-lang="zh"><%= post.title %></span>
+      <span data-lang="en"><%= post.title_en || post.title %></span>
+    </a>
+  </h2>
+
+  <% if (exZh) { %><p class="card-excerpt" data-lang="zh"><%= exZh %><% if (exZh.length >= 110) { %>…<% } %></p><% } %>
+  <% if (exEn) { %><p class="card-excerpt" data-lang="en"><%= exEn %></p><% } %>
+
+  <% if (post.tags && post.tags.length) { %>
+    <div class="card-tags">
+      <% post.tags.each(function (tag) { %>
+        <a class="chip" href="<%- url_for(tag.path) %>">#<%= tag.name %></a>
+      <% }); %>
+    </div>
+  <% } %>
+</article>

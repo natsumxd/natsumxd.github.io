@@ -1,0 +1,19 @@
+<section class="page-head">
+  <h1 class="page-title">
+    <span data-lang="zh"><%= page.title || '目录' %></span>
+    <span data-lang="en"><%= page.title_en || 'Category' %></span>
+  </h1>
+  <p class="page-desc"><%= page.posts.length %> <span data-lang="zh">篇文章</span><span data-lang="en">posts</span></p>
+</section>
+
+<ul class="archive-items">
+  <% page.posts.each(function (p) { %>
+    <li class="archive-item">
+      <time datetime="<%= date_xml(p.date) %>"><%= date(p.date, 'YYYY.MM.DD') %></time>
+      <a href="<%- url_for(p.path) %>">
+        <span data-lang="zh"><%= p.title %></span>
+        <span data-lang="en"><%= p.title_en || p.title %></span>
+      </a>
+    </li>
+  <% }); %>
+</ul>

@@ -1,0 +1,38 @@
+<section class="hero">
+  <div class="hero-avatar">
+    <img src="<%- url_for(theme.avatar) %>" alt="<%= config.author %>" width="96" height="96">
+  </div>
+  <div class="hero-text">
+    <p class="hero-greeting">
+      <span data-lang="zh"><%= theme.hero.greeting_zh %></span>
+      <span data-lang="en"><%= theme.hero.greeting_en %></span>
+    </p>
+    <h1 class="hero-name"><%= theme.hero.name %></h1>
+    <p class="hero-tagline">
+      <span data-lang="zh"><%= theme.hero.tagline_zh %></span>
+      <span data-lang="en"><%= theme.hero.tagline_en %></span>
+    </p>
+  </div>
+</section>
+
+<section class="post-list">
+  <% page.posts.each(function (post) { %>
+    <%- partial('_partial/post-card', { post: post }) %>
+  <% }); %>
+</section>
+
+<% if (page.total > 1) { %>
+<nav class="pager">
+  <% if (page.prev) { %>
+    <a class="pager-btn" href="<%- url_for(page.prev_link) %>">← <span data-lang="zh">更新的</span><span data-lang="en">Newer</span></a>
+  <% } else { %>
+    <span class="pager-btn is-disabled">← <span data-lang="zh">更新的</span><span data-lang="en">Newer</span></span>
+  <% } %>
+  <span class="pager-info"><%= page.page %> / <%= page.total %></span>
+  <% if (page.next) { %>
+    <a class="pager-btn" href="<%- url_for(page.next_link) %>"><span data-lang="zh">更早的</span><span data-lang="en">Older</span> →</a>
+  <% } else { %>
+    <span class="pager-btn is-disabled"><span data-lang="zh">更早的</span><span data-lang="en">Older</span> →</span>
+  <% } %>
+</nav>
+<% } %>

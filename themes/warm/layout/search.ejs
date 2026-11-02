@@ -1,0 +1,20 @@
+<section class="page-head">
+  <h1 class="page-title">
+    <span data-lang="zh">搜索</span>
+    <span data-lang="en">Search</span>
+  </h1>
+  <p class="page-desc">
+    <span data-lang="zh">输入关键词，找找写过的东西。</span>
+    <span data-lang="en">Type a keyword to find what's been written.</span>
+  </p>
+</section>
+
+<div class="search-box">
+  <input id="search-input" type="search" autocomplete="off"
+         placeholder="搜索标题或正文… / Search…" aria-label="搜索 / Search">
+  <span class="search-hint">ESC</span>
+</div>
+
+<div id="search-results" class="search-results"></div>
+
+<script src="<%- url_for('/js/search.js') %>" defer></script>

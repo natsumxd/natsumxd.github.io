@@ -1,0 +1,32 @@
+<section class="page-head">
+  <h1 class="page-title">
+    <span data-lang="zh">分类</span>
+    <span data-lang="en">Categories</span>
+  </h1>
+  <p class="page-desc">
+    <span data-lang="zh">按主题归拢的写作。</span>
+    <span data-lang="en">Writing sorted by theme.</span>
+  </p>
+</section>
+
+<div class="archive-list">
+  <% site.categories.sort('name').each(function (cat) { %>
+    <div class="archive-year">
+      <h2 class="archive-year-label">
+        <a href="<%- url_for(cat.path) %>"><%= cat.name %></a>
+        <span class="chip-count"><%= cat.length %></span>
+      </h2>
+      <ul class="archive-items">
+        <% cat.posts.sort('date', -1).each(function (p) { %>
+          <li class="archive-item">
+            <time datetime="<%= date_xml(p.date) %>"><%= date(p.date, 'YYYY.MM.DD') %></time>
+            <a href="<%- url_for(p.path) %>">
+              <span data-lang="zh"><%= p.title %></span>
+              <span data-lang="en"><%= p.title_en || p.title %></span>
+            </a>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+  <% }); %>
+</div>
